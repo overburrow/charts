@@ -6,7 +6,7 @@ dotenv:
   - .env
 
 tasks:
-  install:cilium:
+  setup:cilium:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
       - helm repo update
@@ -16,7 +16,7 @@ tasks:
           -f bootstrap/cilium/values.yaml \
           --wait
 
-  install:tailscale:
+  setup:tailscale:
     cmds:
       - helm repo add tailscale https://pkgs.tailscale.com/helmcharts
       - helm repo update
@@ -28,7 +28,7 @@ tasks:
           --set-string oauth.clientSecret=$TAILSCALE_CLIENT_SECRET \
           --wait
 
-  install:argocd:
+  setup:argocd:
     cmds:
       - helm repo add argo https://argoproj.github.io/argo-helm
       - helm repo update
@@ -38,7 +38,7 @@ tasks:
           --create-namespace \
           -f bootstrap/argocd/values.yaml \
           --wait
-      - kubectl apply -f bootstrap/root-app.yaml
+      - kubectl apply -f bootstrap/argocd/root-app.yaml
 
   secret:cnpg:
     vars:

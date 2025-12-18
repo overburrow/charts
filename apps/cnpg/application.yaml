@@ -13,7 +13,7 @@ items:
       sources:
         - repoURL: https://cloudnative-pg.io/charts
           chart: cloudnative-pg
-          targetRevision: 0.21.0
+          targetRevision: 0.27.0
           helm:
             valueFiles:
               - $charts/apps/cnpg/values.yaml
@@ -42,6 +42,7 @@ items:
       sources:
         - repoURL: https://github.com/overburrow/charts.git
           targetRevision: main
+          recurse: true
           path: apps/cnpg/instances
       destination:
         server: https://kubernetes.default.svc
