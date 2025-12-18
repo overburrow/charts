@@ -23,7 +23,7 @@ spec:
       cpu: "250m"
     limits:
       memory: "1Gi"
-      cpu: "1000m"
+      cpu: "1"
 
   # 5. Backup Configuration (Optional but Recommended)
   # Writes Write-Ahead Logs (WAL) to a PVC for point-in-time recovery.
