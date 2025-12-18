@@ -16,10 +16,10 @@ items:
           targetRevision: 0.21.0
           helm:
             valueFiles:
-              - $values/charts/apps/cnpg/values.yaml
+              - $charts/apps/cnpg/values.yaml
         - repoURL: https://github.com/overburrow/charts.git
           targetRevision: main
-          ref: values
+          ref: charts
       destination:
         server: https://kubernetes.default.svc
         namespace: cnpg-system
@@ -39,10 +39,10 @@ items:
         argocd.argoproj.io/sync-wave: "2"
     spec:
       project: default
-      source:
-        repoURL: https://github.com/overburrow/charts.git
-        targetRevision: main
-        path: charts/apps/cnpg/instances
+      sources:
+        - repoURL: https://github.com/overburrow/charts.git
+          targetRevision: main
+          path: apps/cnpg/instances
       destination:
         server: https://kubernetes.default.svc
         namespace: database
