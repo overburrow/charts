@@ -6,22 +6,50 @@ dotenv:
   - .env
 
 tasks:
-  cilium:
+  install:cilium:
     cmds:
-      - chmod +x ./scripts/install/cilium.sh
-      - ./scripts/install/cilium.sh
+      - helm repo add cilium https://helm.cilium.io/
+      - helm repo update
+      - |
+        helm upgrade --install cilium cilium/cilium \
+          --namespace kube-system \
+          -f bootstrap/cilium/values.yaml \
+          --wait
 
-  tailscale:
+  install:tailscale:
     cmds:
-      - chmod +x ./scripts/install/tailscale.sh
-      - ./scripts/install/tailscale.sh
+      - helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+      - helm repo update
+      - |
+        helm upgrade --install tailscale-operator tailscale/tailscale-operator \
+          --namespace=tailscale \
+          --create-namespace \
+          --set-string oauth.clientId=$TAILSCALE_CLIENT_ID \
+          --set-string oauth.clientSecret=$TAILSCALE_CLIENT_SECRET \
+          --wait
 
-  argocd:
+  install:argocd:
     cmds:
-      - chmod +x ./scripts/install/argocd.sh
-      - ./scripts/install/argocd.sh
+      - helm repo add argo https://argoproj.github.io/argo-helm
+      - helm repo update
+      - |
+        helm upgrade --install argocd argo/argo-cd \
+          --namespace argocd \
+          --create-namespace \
+          -f bootstrap/argocd/values.yaml \
+          --wait
+      - kubectl apply -f bootstrap/root-app.yaml
 
   secret:cnpg:
+    vars:
+      PG_PASSWORD:
+        sh: openssl rand -base64 24
     cmds:
-      - chmod +x ./scripts/secrets/cnpg.sh
-      - ./scripts/secrets/cnpg.sh
+      - kubectl create namespace database --dry-run=client -o yaml | kubectl apply -f -
+      - echo Generated password {{.PG_PASSWORD}}
+      - |
+        kubectl create secret generic cnpg-superuser-secret \
+          --namespace database \
+          --from-literal=username=postgres \
+          --from-literal=password="{{.PG_PASSWORD}}" \
+          --dry-run=client -o yaml | kubectl apply -f -
