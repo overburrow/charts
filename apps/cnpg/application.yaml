@@ -42,7 +42,6 @@ items:
       sources:
         - repoURL: https://github.com/overburrow/charts.git
           targetRevision: main
-          recurse: true
           path: apps/cnpg/instances
       destination:
         server: https://kubernetes.default.svc
@@ -53,3 +52,4 @@ items:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - ServerSideApply=true
