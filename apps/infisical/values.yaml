@@ -13,8 +13,8 @@ resources:
 
 ingress:
   enabled: false
-  # nginx:
-  #   enabled: false
+  nginx:
+    enabled: false
 
 infisical:
   service:
