@@ -12,6 +12,9 @@ resources:
     cpu: 500m
 
 infisical:
+  service:
+    annotations:
+      "tailscale.com/expose": "true"
   env:
     - name: DB_CONNECTION_URI
       valueFrom:
