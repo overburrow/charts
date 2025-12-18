@@ -11,6 +11,10 @@ resources:
     memory: 512Mi
     cpu: 500m
 
+ingress:
+  nginx:
+    enabled: false
+
 infisical:
   service:
     annotations:
