@@ -17,6 +17,9 @@ spec:
     - repoURL: https://github.com/overburrow/infra.git
       targetRevision: main
       ref: infra
+    - repoURL: https://github.com/overburrow/infra.git
+      targetRevision: main
+      path: apps/argocd-image-updater/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

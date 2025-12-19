@@ -43,7 +43,7 @@ items:
       sources:
         - repoURL: https://github.com/overburrow/infra.git
           targetRevision: main
-          path: apps/cnpg/instances
+          path: apps/cnpg/manifests
       destination:
         server: https://kubernetes.default.svc
         namespace: database

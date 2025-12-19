@@ -17,4 +17,4 @@ extraEnv:
     valueFrom:
       secretKeyRef:
         name: argocd-image-updater-secrets
-        key: GITHUB_TOKEN
+        key: GIT_TOKEN
