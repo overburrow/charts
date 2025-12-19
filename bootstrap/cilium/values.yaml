@@ -13,8 +13,6 @@ hubble:
     enabled: true
   ui:
     enabled: true
-    # annotations:
-    #   "tailscale.com/expose": "true"
 
 ipam:
   mode: "kubernetes"

@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/overburrow/charts.git
+    repoURL: https://github.com/overburrow/infra.git
     targetRevision: main
     path: apps/networking
   destination:

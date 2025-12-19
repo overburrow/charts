@@ -13,10 +13,10 @@ spec:
       targetRevision: 1.19.2
       helm:
         valueFiles:
-          - $charts/apps/cert-manager/values.yaml
-    - repoURL: https://github.com/overburrow/charts.git
+          - $infra/apps/cert-manager/values.yaml
+    - repoURL: https://github.com/overburrow/infra.git
       targetRevision: main
-      ref: charts
+      ref: infra
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

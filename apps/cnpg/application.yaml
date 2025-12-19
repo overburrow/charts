@@ -16,10 +16,10 @@ items:
           targetRevision: 0.27.0
           helm:
             valueFiles:
-              - $charts/apps/cnpg/values.yaml
-        - repoURL: https://github.com/overburrow/charts.git
+              - $infra/apps/cnpg/values.yaml
+        - repoURL: https://github.com/overburrow/infra.git
           targetRevision: main
-          ref: charts
+          ref: infra
       destination:
         server: https://kubernetes.default.svc
         namespace: cnpg-system
@@ -41,7 +41,7 @@ items:
     spec:
       project: default
       sources:
-        - repoURL: https://github.com/overburrow/charts.git
+        - repoURL: https://github.com/overburrow/infra.git
           targetRevision: main
           path: apps/cnpg/instances
       destination:

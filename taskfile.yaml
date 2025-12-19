@@ -63,21 +63,21 @@ tasks:
         sh: kubectl get pod -n database -l cnpg.io/cluster={{.DB_CLUSTER_NAME}},cnpg.io/instanceRole=primary -o jsonpath='{.items[0].metadata.name}'
       DB_NAME: infisical
       DB_USER: infisical
-      DB_PASSWORD:
-        sh: openssl rand -hex 24
-      AUTH_SECRET:
-        sh: openssl rand -base64 32
-      ENCRYPTION_KEY:
-        sh: openssl rand -hex 16
     cmds:
       # DB secrets
       - |
         kubectl create secret generic infisical-secrets \
           --namespace infisical \
-          --from-literal=DB_CONNECTION_URI="postgresql://{{.DB_USER}}:{{.DB_PASSWORD}}@{{.DB_CLUSTER_NAME}}-rw.database.svc:5432/{{.DB_NAME}}" \
-          --from-literal=AUTH_SECRET="{{.AUTH_SECRET}}" \
-          --from-literal=ENCRYPTION_KEY="{{.ENCRYPTION_KEY}}" \
+          --from-literal=DB_CONNECTION_URI="postgresql://{{.DB_USER}}:$INFISICAL_DB_PASSWORD@{{.DB_CLUSTER_NAME}}-rw.database.svc:5432/{{.DB_NAME}}" \
+          --from-literal=AUTH_SECRET="$INFISICAL_AUTH_SECRET" \
+          --from-literal=ENCRYPTION_KEY="$INFISICAL_ENCRYPTION_KEY" \
           --from-literal=REDIS_URL="redis://redis-master.database.svc:6379" \
+          --from-literal=SMTP_HOST="smtp.resend.com" \
+          --from-literal=SMTP_USERNAME="resend" \
+          --from-literal=SMTP_PASSWORD="$INFISICAL_SMTP_PASSWORD" \
+          --from-literal=SMTP_PORT=587 \
+          --from-literal=SMTP_FROM_ADDRESS=hey@overburrow.dev \
+          --from-literal=SMTP_FROM_NAME=Infisical \
           --dry-run=client -o yaml | kubectl apply -f -
       - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "CREATE USER {{.DB_USER}};" || true
       - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "ALTER USER {{.DB_USER}} WITH ENCRYPTED PASSWORD '{{.DB_PASSWORD}}';" || echo "User likely exists, skipping..."
@@ -87,11 +87,13 @@ tasks:
         kubectl create secret generic infisical-machine-identity \
           --namespace infisical \
           --from-literal=clientId=$INFISICAL_CLIENT_ID \
-          --from-literal=clientSecret=$INFISICAL_CLIENT_SECRET
+          --from-literal=clientSecret=$INFISICAL_CLIENT_SECRET \
+          --dry-run=client -o yaml | kubectl apply -f -
 
   secret:cert-manager:
     cmds:
       - |
         kubectl create secret generic cloudflare-api-token \
           --namespace cert-manager \
-          --from-literal=api-token=$CLOUDFLARE_API_TOKEN
+          --from-literal=api-token=$CLOUDFLARE_API_TOKEN \          
+          --dry-run=client -o yaml | kubectl apply -f -
