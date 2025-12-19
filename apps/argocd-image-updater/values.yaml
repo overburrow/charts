@@ -1,0 +1,23 @@
+config:
+  registries:
+    - name: GitHub Container Registry
+      api_url: https://ghcr.io
+      prefix: ghcr.io
+      ping: yes
+      # You will need to create a generic K8s secret named 'ghcr-secret'
+      # with key 'token' containing a PAT with 'read:packages' scope
+      credentials: secret:argocd/ghcr-credentials#token
+
+authScripts:
+  # This script tells the updater how to push changes back to THIS git repo
+  git-creds: |
+    #!/bin/sh
+    echo "username=git"
+    echo "password=$GIT_TOKEN" # You must inject this env var via secret
+
+extraEnv:
+  - name: GIT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: github-git-write-token # Create this secret manually or via sealed-secrets
+        key: token

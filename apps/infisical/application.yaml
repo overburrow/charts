@@ -1,28 +1,54 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: infisical
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "5"
-spec:
-  project: default
-  sources:
-    - repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
-      chart: infisical-standalone
-      targetRevision: 1.7.2
-      helm:
-        valueFiles:
-          - $values/apps/infisical/values.yaml
-    - repoURL: https://github.com/overburrow/charts.git
-      targetRevision: main
-      ref: values
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: infisical
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+kind: ApplicationList
+items:
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: infisical
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+          chart: infisical-standalone
+          targetRevision: 1.7.2
+          helm:
+            valueFiles:
+              - $values/apps/infisical/values.yaml
+        - repoURL: https://github.com/overburrow/charts.git
+          targetRevision: main
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: infisical
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: infisical-operator
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/sync-wave: "6"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+          chart: secrets-operator
+          targetRevision: 0.10.17
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: infisical
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
