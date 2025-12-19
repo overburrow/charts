@@ -12,5 +12,5 @@ routes:
   - name: infisical
     namespace: infisical
     hostname: "infisical.overburrow.dev"
-    serviceName: infisical-standalone
+    serviceName: infisical-infisical-standalone-infisical
     servicePort: 8080
