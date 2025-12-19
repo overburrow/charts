@@ -29,7 +29,12 @@ items:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/template/metadata/annotations/updatedAt
+            - /metadata/annotations/updatedAt
   - apiVersion: argoproj.io/v1alpha1
     kind: Application
     metadata:
