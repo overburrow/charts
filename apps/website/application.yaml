@@ -16,10 +16,6 @@ spec:
     repoURL: https://github.com/overburrow/infra.git
     targetRevision: main
     path: apps/website
-    helm:
-      parameters:
-        - name: image.tag
-          value: latest
   destination:
     server: https://kubernetes.default.svc
     namespace: website
