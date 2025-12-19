@@ -18,7 +18,7 @@ jobs:
     name: Build and Push Docker Image
     runs-on: ubuntu-24.04-arm
     permissions:
-      contents: write
+      contents: read
       packages: write
 
     steps:
@@ -42,6 +42,6 @@ jobs:
           file: ${{ inputs.dockerfile_path }}
           push: true
           platforms: linux/arm64
-          tags: ghcr.io/spitikos/${{ inputs.image_name }}:${{ inputs.image_tag }}
+          tags: ghcr.io/overburrow/${{ inputs.image_name }}:${{ inputs.image_tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
