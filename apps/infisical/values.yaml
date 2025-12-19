@@ -17,9 +17,9 @@ ingress:
     enabled: false
 
 infisical:
-  service:
-    annotations:
-      "tailscale.com/expose": "true"
+  # service:
+  #   annotations:
+  #     "tailscale.com/expose": "true"
   env:
     - name: DB_CONNECTION_URI
       valueFrom:
