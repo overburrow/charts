@@ -9,15 +9,14 @@ config:
       credentials: secret:argocd/ghcr-credentials#token
 
 authScripts:
-  # This script tells the updater how to push changes back to THIS git repo
   git-creds: |
     #!/bin/sh
     echo "username=git"
-    echo "password=$GIT_TOKEN" # You must inject this env var via secret
+    echo "password=$GIT_TOKEN"
 
 extraEnv:
   - name: GIT_TOKEN
     valueFrom:
       secretKeyRef:
-        name: github-git-write-token # Create this secret manually or via sealed-secrets
+        name: argocd-image-updater-git-token
         key: token

@@ -66,10 +66,11 @@ tasks:
       DB_PASSWORD:
         sh: openssl rand -hex 24
       AUTH_SECRET:
-        sh: openssl rand -hex 32
+        sh: openssl rand -base64 32
       ENCRYPTION_KEY:
         sh: openssl rand -hex 16
     cmds:
+      # DB secrets
       - |
         kubectl create secret generic infisical-secrets \
           --namespace infisical \
@@ -81,6 +82,12 @@ tasks:
       - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "CREATE USER {{.DB_USER}};" || true
       - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "ALTER USER {{.DB_USER}} WITH ENCRYPTED PASSWORD '{{.DB_PASSWORD}}';" || echo "User likely exists, skipping..."
       - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "CREATE DATABASE {{.DB_NAME}} OWNER {{.DB_USER}};" || echo "DB likely exists, skipping..."
+      # Universal machine identity authentication
+      - |
+        kubectl create secret generic infisical-machine-identity \
+          --namespace infisical \
+          --from-literal=clientId=$INFISICAL_CLIENT_ID \
+          --from-literal=clientSecret=$INFISICAL_CLIENT_SECRET
 
   secret:cert-manager:
     cmds:

@@ -7,7 +7,7 @@ items:
       name: infisical
       namespace: argocd
       annotations:
-        argocd.argoproj.io/sync-wave: "5"
+        argocd.argoproj.io/sync-wave: "1"
     spec:
       project: default
       sources:
@@ -36,7 +36,7 @@ items:
       name: infisical-operator
       namespace: argocd
       annotations:
-        argocd.argoproj.io/sync-wave: "6"
+        argocd.argoproj.io/sync-wave: "2"
     spec:
       project: default
       sources:
