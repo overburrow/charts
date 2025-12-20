@@ -25,3 +25,10 @@ tasks:
           --wait
       # Apply the Root App manually to kickstart GitOps
       - kubectl apply -f bootstrap/argocd/root-app.yaml
+
+  secret:tailscale:
+    cmds:
+      - |
+        kubectl create secret generic operator-oauth -n tailscale \
+          --from-literal=client_id=$TAILSCALE_CLIENT_ID \
+          --from-literal=client_secret=$TAILSCALE_CLIENT_SECRET
