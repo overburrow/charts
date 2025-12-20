@@ -11,8 +11,8 @@ config:
 authScripts:
   git-creds: |
     #!/bin/sh
-    echo "username=git"
-    echo "password=$GIT_TOKEN"
+    echo "username:argocd"
+    echo "password:$GIT_TOKEN"
 
 extraEnv:
   - name: GIT_TOKEN
