@@ -26,7 +26,25 @@ k8sClientRateLimit:
   qps: 50
   burst: 100
 
-MTU: 1200
+MTU: 1200 # to fit tailscale mtu of 1280
 
 encryption:
   enabled: false # let tailscale handle the security
+
+
+routingMode: native
+autoDirectNodeRoutes: false
+ipv4NativeRoutingCIDR: "10.42.0.0/16"
+
+devices: "tailscale0"
+directRoutingDevice: "tailscale0"
+
+loadBalancer:
+  acceleration: disabled
+
+bpf:
+  masquerade: true
+  tproxy: true
+
+k8s:
+  requireIPv4PodCIDR: true

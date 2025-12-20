@@ -11,13 +11,17 @@ tasks:
       NODE: "{{index .MATCH 0}}"
     cmds:
       - kubectl cordon {{.NODE}}
+      - kubectl scale deployment -n cnpg-system cnpg-operator-cloudnative-pg --replicas=0
+      - kubectl delete pdb postgres-primary -n database
       - kubectl drain {{.NODE}} --ignore-daemonsets --delete-emptydir-data
       - ssh ethan@{{.NODE}} "sudo shutdown -h now"
+
   node:on:*:
     vars:
       NODE: "{{index .MATCH 0}}"
     cmds:
       - kubectl uncordon {{.NODE}}
+      - kubectl scale deployment -n cnpg-system cnpg-operator-cloudnative-pg --replicas=1
 
   setup:cilium:
     cmds:

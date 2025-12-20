@@ -45,4 +45,4 @@ routes:
     serviceName: website
     servicePort: 80
     hostname: "overburrow.dev"
-    visibility: public
+    visibility: private
