@@ -9,7 +9,7 @@ spec:
     updateStrategy: "latest"
     ignoreTags:
       - "latest"
-  writeBackFConfig:
+  writeBackConfig:
     method: "git"
     gitConfig:
       repository: "git@github.com:overburrow/infra.git"
@@ -18,7 +18,7 @@ spec:
   applicationRefs:
     - namePattern: "website"
       images:
-        - alias: website
+        - alias: "website"
           imageName: "ghcr.io/overburrow/website"
           manifestTargets:
             helm:
