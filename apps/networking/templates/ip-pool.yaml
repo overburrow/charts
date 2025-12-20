@@ -5,5 +5,4 @@ metadata:
   namespace: kube-system
 spec:
   blocks:
-    - start: "10.0.0.200"
-      stop: "10.0.0.250"
+    - cidr: "10.0.0.6/32"
