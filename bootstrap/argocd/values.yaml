@@ -12,9 +12,6 @@ applicationSet:
   replicas: 1
 server:
   replicas: 1
-  # service:
-  #   annotations:
-  #     "tailscale.com/expose": "true"
 
 configs:
   params:

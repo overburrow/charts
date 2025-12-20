@@ -6,6 +6,19 @@ dotenv:
   - .env
 
 tasks:
+  node:off:*:
+    vars:
+      NODE: "{{index .MATCH 0}}"
+    cmds:
+      - kubectl cordon {{.NODE}}
+      - kubectl drain {{.NODE}} --ignore-daemonsets --delete-emptydir-data
+      - ssh ethan@{{.NODE}} "sudo shutdown -h now"
+  node:on:*:
+    vars:
+      NODE: "{{index .MATCH 0}}"
+    cmds:
+      - kubectl uncordon {{.NODE}}
+
   setup:cilium:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
