@@ -18,7 +18,8 @@ spec:
   applicationRefs:
     - namePattern: "website"
       images:
-        - imageName: "ghcr.io/overburrow/website"
+        - alias: website
+          imageName: "ghcr.io/overburrow/website"
           manifestTargets:
             helm:
               name: "image.repository"
