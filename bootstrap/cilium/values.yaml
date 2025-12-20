@@ -8,11 +8,11 @@ gatewayAPI:
   enabled: true
 
 hubble:
-  enabled: true
+  enabled: false
   relay:
-    enabled: true
+    enabled: false
   ui:
-    enabled: true
+    enabled: false
 
 ipam:
   mode: "kubernetes"
@@ -43,7 +43,7 @@ loadBalancer:
   acceleration: disabled
 
 bpf:
-  masquerade: true
+  masquerade: false
   tproxy: true
 
 k8s:

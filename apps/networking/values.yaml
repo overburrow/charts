@@ -11,8 +11,12 @@ gateways:
         port: 80
         protocol: HTTP
         hostname: null # null means "match all" for redirection
-      
-      - name: https-org
+      - name: https-org-root
+        port: 443
+        protocol: HTTPS
+        hostname: "overburrow.org"
+        tlsSecret: overburrow-org-tls
+      - name: https-org-wildcard
         port: 443
         protocol: HTTPS
         hostname: "*.overburrow.org"
@@ -21,7 +25,12 @@ gateways:
   private:
     tailscaleHostname: ingress
     listeners:
-      - name: https-dev
+      - name: https-dev-root
+        port: 443
+        protocol: HTTPS
+        hostname: "*.overburrow.dev"
+        tlsSecret: overburrow-dev-tls
+      - name: https-dev-wildcard
         port: 443
         protocol: HTTPS
         hostname: "*.overburrow.dev"
