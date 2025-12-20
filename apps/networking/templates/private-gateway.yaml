@@ -4,11 +4,7 @@ metadata:
   name: private-gateway
   namespace: networking
 spec:
-  gatewayClassName: cilium-private
-  infrastructure:
-    annotations:
-      tailscale.com/expose: "true"
-      tailscale.com/hostname: {{ .Values.gateways.private.tailscaleHostname | quote }}
+  gatewayClassName: tailscale
   listeners:
     {{- range .Values.gateways.private.listeners }}
     - name: {{ .name }}
@@ -27,24 +23,3 @@ spec:
           - name: {{ .tlsSecret }}
       {{- end }}
     {{- end }}
----
-apiVersion: cilium.io/v2alpha1
-kind: CiliumGatewayClassConfig
-metadata:
-  name: cilium-private-config
-  namespace: kube-system
-spec:
-  service:
-    loadBalancerClass: tailscale
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: GatewayClass
-metadata:
-  name: cilium-private
-spec:
-  controllerName: io.cilium/gateway-controller
-  parametersRef:
-    group: cilium.io
-    kind: CiliumGatewayClassConfig
-    name: cilium-private-config
-    namespace: kube-system

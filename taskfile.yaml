@@ -2,37 +2,16 @@
 
 version: 3
 
-dotenv:
-  - .env
-
 tasks:
-  node:off:*:
-    vars:
-      NODE: "{{index .MATCH 0}}"
+  setup:traefik:
     cmds:
-      - kubectl cordon {{.NODE}}
-      - kubectl scale deployment -n cnpg-system cnpg-operator-cloudnative-pg --replicas=0
-      - kubectl delete pdb postgres-primary -n database
-      - kubectl drain {{.NODE}} --ignore-daemonsets --delete-emptydir-data
-      - ssh ethan@{{.NODE}} "sudo shutdown -h now"
-
-  node:on:*:
-    vars:
-      NODE: "{{index .MATCH 0}}"
-    cmds:
-      - kubectl uncordon {{.NODE}}
-      - kubectl scale deployment -n cnpg-system cnpg-operator-cloudnative-pg --replicas=1
-
-  setup:cilium:
-    cmds:
-      - helm repo add cilium https://helm.cilium.io/
+      - helm repo add traefik https://traefik.github.io/charts
       - helm repo update
       - |
-        helm upgrade --install cilium cilium/cilium \
+        helm upgrade --install traefik traefik/traefik \
           --namespace kube-system \
-          -f bootstrap/cilium/values.yaml \
-          --wait
-      # - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
+          --create-namespace \
+          -f bootstrap/traefik/values.yaml
 
   setup:tailscale:
     cmds:
@@ -56,61 +35,5 @@ tasks:
           --create-namespace \
           -f bootstrap/argocd/values.yaml \
           --wait
+      # Apply the Root App manually to kickstart GitOps
       - kubectl apply -f bootstrap/argocd/root-app.yaml
-
-  secret:cnpg:
-    vars:
-      PG_USER: postgres
-      PG_PASSWORD:
-        sh: openssl rand -base64 24
-    cmds:
-      - kubectl create namespace database --dry-run=client -o yaml | kubectl apply -f -
-      - echo Generated password {{.PG_PASSWORD}}
-      - |
-        kubectl create secret generic cnpg-superuser-secret \
-          --namespace database \
-          --from-literal=username={{.PG_USER}} \
-          --from-literal=password="{{.PG_PASSWORD}}" \
-          --dry-run=client -o yaml | kubectl apply -f -
-
-  secret:infisical:
-    vars:
-      DB_CLUSTER_NAME: postgres
-      DB_POD:
-        sh: kubectl get pod -n database -l cnpg.io/cluster={{.DB_CLUSTER_NAME}},cnpg.io/instanceRole=primary -o jsonpath='{.items[0].metadata.name}'
-      DB_NAME: infisical
-      DB_USER: infisical
-    cmds:
-      # DB secrets
-      - |
-        kubectl create secret generic infisical-secrets \
-          --namespace infisical \
-          --from-literal=DB_CONNECTION_URI="postgresql://{{.DB_USER}}:$INFISICAL_DB_PASSWORD@{{.DB_CLUSTER_NAME}}-rw.database.svc:5432/{{.DB_NAME}}" \
-          --from-literal=AUTH_SECRET="$INFISICAL_AUTH_SECRET" \
-          --from-literal=ENCRYPTION_KEY="$INFISICAL_ENCRYPTION_KEY" \
-          --from-literal=REDIS_URL="redis://redis-master.database.svc:6379" \
-          --from-literal=SMTP_HOST="smtp.resend.com" \
-          --from-literal=SMTP_USERNAME="resend" \
-          --from-literal=SMTP_PASSWORD="$INFISICAL_SMTP_PASSWORD" \
-          --from-literal=SMTP_PORT=587 \
-          --from-literal=SMTP_FROM_ADDRESS=hey@overburrow.dev \
-          --from-literal=SMTP_FROM_NAME=Infisical \
-          --dry-run=client -o yaml | kubectl apply -f -
-      - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "CREATE USER {{.DB_USER}};" || true
-      - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "ALTER USER {{.DB_USER}} WITH ENCRYPTED PASSWORD '$INFISICAL_DB_PASSWORD';" || echo "User likely exists, skipping..."
-      - kubectl exec -n database -i {{.DB_POD}} -- psql -U postgres -c "CREATE DATABASE {{.DB_NAME}} OWNER {{.DB_USER}};" || echo "DB likely exists, skipping..."
-      # Universal machine identity authentication
-      - |
-        kubectl create secret generic infisical-machine-identity \
-          --namespace infisical \
-          --from-literal=clientId=$INFISICAL_CLIENT_ID \
-          --from-literal=clientSecret=$INFISICAL_CLIENT_SECRET \
-          --dry-run=client -o yaml | kubectl apply -f -
-
-  secret:cert-manager:
-    cmds:
-      - |
-        kubectl create secret generic cloudflare-api-token \
-          --namespace cert-manager \
-          --from-literal=api-token=$CLOUDFLARE_API_TOKEN \          
-          --dry-run=client -o yaml | kubectl apply -f -

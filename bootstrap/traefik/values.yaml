@@ -1,0 +1,11 @@
+# Traefik Helm Values
+service:
+  enabled: true
+  type: LoadBalancer
+
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesGateway:
+    enabled: true
+    experimentalChannel: false
