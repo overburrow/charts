@@ -39,11 +39,7 @@ ipv4NativeRoutingCIDR: "10.42.0.0/16"
 devices: "tailscale0"
 directRoutingDevice: "tailscale0"
 
-loadBalancer:
-  acceleration: disabled
-
 bpf:
-  masquerade: false
   tproxy: true
 
 k8s:
