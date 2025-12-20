@@ -28,7 +28,7 @@ gateways:
       - name: https-dev-root
         port: 443
         protocol: HTTPS
-        hostname: "*.overburrow.dev"
+        hostname: "overburrow.dev"
         tlsSecret: overburrow-dev-tls
       - name: https-dev-wildcard
         port: 443
