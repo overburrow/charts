@@ -33,13 +33,16 @@ routes:
     serviceName: argocd-server
     servicePort: 80
     hostname: "argocd.overburrow.dev"
+    visibility: private
   - name: infisical
     namespace: infisical
     serviceName: infisical-infisical-standalone-infisical
     servicePort: 8080
     hostname: "infisical.overburrow.dev"
+    visibility: private
   - name: website
     namespace: website
     serviceName: website
     servicePort: 80
     hostname: "overburrow.dev"
+    visibility: public

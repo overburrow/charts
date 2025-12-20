@@ -6,8 +6,15 @@ metadata:
   namespace: {{ .namespace }}
 spec:
   parentRefs:
-    - name: tailscale-gateway
+    {{- if or (eq .visibility "private") (eq .visibility "both") }}
+    - name: private-gateway
       namespace: networking
+    {{- end }}
+
+    {{- if or (eq .visibility "public") (eq .visibility "both") }}
+    - name: public-gateway
+      namespace: networking
+    {{- end }}
   hostnames:
     - {{ .hostname }}
   rules:
