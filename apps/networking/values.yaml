@@ -7,16 +7,16 @@ certificates:
 gateways:
   public:
     listeners:
-      # - name: http
-      #   port: 80
-      #   protocol: HTTP
-      #   hostname: null # null means "match all" for redirection
-      - name: https-org-root
+      - name: web
+        port: 80
+        protocol: HTTP
+        hostname: "*"
+      - name: websecure
         port: 443
         protocol: HTTPS
         hostname: "overburrow.org"
         tlsSecret: overburrow-org-tls
-      - name: https-org-wildcard
+      - name: websecure
         port: 443
         protocol: HTTPS
         hostname: "*.overburrow.org"
