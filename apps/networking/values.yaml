@@ -27,7 +27,7 @@ routes:
   - name: argocd
     namespace: argocd
     serviceName: argocd-server
-    servicePort: 80
+    servicePort: 443
     hostname: "argocd.overburrow.dev"
     visibility: private
   - name: infisical
