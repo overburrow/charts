@@ -40,11 +40,5 @@ routes:
     namespace: website
     serviceName: website
     servicePort: 80
-    hostname: "overburrow.dev"
-    visibility: private
-  - name: website-public
-    namespace: website
-    serviceName: website
-    servicePort: 80
     hostname: "overburrow.org"
     visibility: public
