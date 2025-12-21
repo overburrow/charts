@@ -4,16 +4,4 @@ config:
       api_url: https://ghcr.io
       prefix: ghcr.io
       ping: yes
-      credentials: secret:argocd/argocd-image-updater-secret#GHCR_TOKEN
-# authScripts:
-#   git-creds: |
-#     #!/bin/sh
-#     echo "username:argocd"
-#     echo "password:$GIT_TOKEN"
-
-# extraEnv:
-#   - name: GIT_TOKEN
-#     valueFrom:
-#       secretKeyRef:
-#         name: argocd-image-updater-secret
-#         key: GIT_TOKEN
+      credentials: secret:argocd/argocd-image-updater-secret#ghcr-token
