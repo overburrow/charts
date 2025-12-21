@@ -13,7 +13,7 @@ spec:
       targetRevision: 0.13.0
       helm:
         valueFiles:
-          - $infra/apps/argocd-image-updater/values.yaml
+          - $infra/apps/actions-runner-controller/values.yaml
     - repoURL: https://github.com/overburrow/infra.git
       targetRevision: main
       ref: infra
