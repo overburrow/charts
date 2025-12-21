@@ -27,3 +27,10 @@ spec:
           - name: {{ .tlsSecret }}
       {{- end }}
     {{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: tailscale
+spec:
+  controllerName: tailscale.com/k8s-operator
