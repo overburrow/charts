@@ -2,9 +2,6 @@ replica:
   allNodes: false
   count: 2
 
-tunnelConfig:
-  protocol: http2
-
 tunnelSecrets:
   base64EncodedPemFile: "ZHVtbXk=" # base64 encoding of "dummy"; cloudflared chart requires this field but we only use the credentials file
   existingConfigJsonFileSecret:
@@ -13,6 +10,7 @@ tunnelSecrets:
 
 tunnelConfig:
   name: "7446ad96-71fb-4b84-ac97-f06a17797ae8"
+  protocol: http2
 
 ingress:
   - hostname: overburrow.org
@@ -21,14 +19,3 @@ ingress:
     service: http://traefik.kube-system.svc.cluster.local:8000
   - service: http_status:404 # catch-all
 
-livenessProbe:
-  initialDelaySeconds: 60
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-
-readinessProbe:
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
