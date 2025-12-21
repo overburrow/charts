@@ -10,11 +10,11 @@ spec:
     ignoreTags:
       - "latest"
   writeBackConfig:
-    method: "git"
-    gitConfig:
-      repository: "git@github.com:overburrow/infra.git"
-      branch: "main"
-      writeBackTarget: "helmvalues:apps/website/values.yaml"
+    method: "argocd"
+    # gitConfig:
+    #   repository: "git@github.com:overburrow/infra.git"
+    #   branch: "main"
+    #   writeBackTarget: "helmvalues:apps/website/values.yaml"
   applicationRefs:
     - namePattern: "website"
       images:
