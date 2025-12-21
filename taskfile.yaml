@@ -48,11 +48,12 @@ tasks:
   secret:tailscale:
     cmds:
       - |
-        kubectl create secret generic operator-oauth
+        kubectl create secret generic operator-oauth \
           --namespace tailscale \
           --from-literal=client_id=$TAILSCALE_CLIENT_ID \
           --from-literal=client_secret=$TAILSCALE_CLIENT_SECRET \
           --dry-run=client -o yaml | kubectl apply -f -
+
   secret:cnpg:
     vars:
       PG_USER: postgres
@@ -107,5 +108,5 @@ tasks:
       - |
         kubectl create secret generic cloudflare-api-token \
           --namespace cert-manager \
-          --from-literal=api-token=$CLOUDFLARE_API_TOKEN \          
+          --from-literal=api-token=$CLOUDFLARE_API_TOKEN \
           --dry-run=client -o yaml | kubectl apply -f -
