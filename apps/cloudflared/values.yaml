@@ -14,8 +14,8 @@ tunnelConfig:
 
 ingress:
   - hostname: overburrow.org
-    service: http://traefik.kube-system.svc.cluster.local:8000
+    service: http://traefik.kube-system.svc.cluster.local:80
   - hostname: "*.overburrow.org"
-    service: http://traefik.kube-system.svc.cluster.local:8000
+    service: http://traefik.kube-system.svc.cluster.local:80
   - service: http_status:404 # catch-all
 
