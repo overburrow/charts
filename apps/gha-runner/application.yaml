@@ -50,7 +50,7 @@ items:
           helm:
             parameters:
               - name: githubConfigUrl
-                value: "https://github.com/overburrow/infra"
+                value: "https://github.com/overburrow"
               - name: githubConfigSecret
                 value: "gha-runner-secret"
               - name: controllerServiceAccount.namespace
